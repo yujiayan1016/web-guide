@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 排版与设计基准完整规范</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                Web Design Spec
+            </div>
+            <ul class="menu" id="menu">
+                <!-- Javascript will populate this based on content -->
+                <li class="menu-item active"><a href="#core">一、核心结论</a></li>
+                <li class="menu-item"><a href="#perception">二、人眼感知逻辑</a></li>
+                <li class="menu-item"><a href="#tech-model">三、Web 技术模型</a></li>
+                <li class="menu-item"><a href="#implementation">四、实现详细逻辑</a></li>
+                <li class="menu-item"><a href="#dji-strategy">五、DJI 排版策略</a></li>
+                <li class="menu-item"><a href="#kandao-strategy">六、Kandao 排版策略</a></li>
+                <li class="menu-item"><a href="#final-spec">七、最终规范 (可执行)</a></li>
+                <li class="menu-item"><a href="#summary">八、终极总结</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <header class="page-header">
+                <h1>Web 排版与设计基准完整规范</h1>
+                <p class="subtitle">Mobile First、PC 非线性放松、DJI vs Kandao 实战对比</p>
+                <div class="meta-info">
+                    <span>版本: 1.0</span>
+                    <span>适用: 设计师 / 前端 / 产品</span>
+                </div>
+            </header>
+
+            <div class="markdown-body">
+                
+                <section id="core" class="section-block">
+                    <h2>一、核心结论</h2>
+                    <div class="highlight-box blue">
+                        <strong>Web 的唯一设计基准是 Mobile（375px CSS 视口）。</strong>
+                        <p>PC 端不是新的设计体系，而是：在 Mobile 规则成立的前提下，通过断点进行“响应式增强”。</p>
+                    </div>
+                    <h3>PC 端不是 Mobile ×2</h3>
+                    <div class="comparison-grid">
+                        <div class="card error">
+                            <h4>❌ 错误理解</h4>
+                            <p>PC 屏幕更大 → 字号 ×2</p>
+                        </div>
+                        <div class="card success">
+                            <h4>✅ 正确理解</h4>
+                            <p>PC 是“非线性放松比例”，而不是线性放大。</p>
+                            <ul>
+                                <li>正文：几乎不变</li>
+                                <li>标题：明显变大</li>
+                                <li>Hero：才可能接近 ×2</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="perception" class="section-block">
+                    <h2>二、为什么 PC 不能等比放大（感知层逻辑）</h2>
+                    <h3>1️⃣ 人眼感知的是“视角”，不是 px</h3>
+                    <table class="ant-table">
+                        <thead>
+                            <tr>
+                                <th>设备</th>
+                                <th>常见观看距离</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>手机</td>
+                                <td>25–35 cm</td>
+                            </tr>
+                            <tr>
+                                <td>笔记本</td>
+                                <td>45–60 cm</td>
+                            </tr>
+                            <tr>
+                                <td>显示器</td>
+                                <td>60–80 cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="note">屏幕越大，人离得越远，会自然抵消一部分“放大需求”。</p>
+
+                    <h3>2️⃣ 如果 PC 全部 ×2，会发生什么？</h3>
+                    <table class="ant-table">
+                        <thead>
+                            <tr>
+                                <th>层级</th>
+                                <th>Mobile</th>
+                                <th>×2 后（错误）</th>
+                                <th>合理 PC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>正文</td>
+                                <td>16</td>
+                                <td class="text-error">32 ❌</td>
+                                <td>16–18</td>
+                            </tr>
+                            <tr>
+                                <td>模块标题</td>
+                                <td>20</td>
+                                <td class="text-error">40 ❌</td>
+                                <td>24–30</td>
+                            </tr>
+                            <tr>
+                                <td>页面标题</td>
+                                <td>24</td>
+                                <td class="text-warning">48 ⚠️</td>
+                                <td>30–36</td>
+                            </tr>
+                            <tr>
+                                <td>Hero</td>
+                                <td>28</td>
+                                <td class="text-warning">56 ⚠️</td>
+                                <td>36–48</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="tech-model" class="section-block">
+                    <h2>三、Web 的真实技术模型</h2>
+                    <h3>1️⃣ Web 不是“画布缩放”，而是“规则重算”</h3>
+                    <div class="highlight-box">
+                        Web 设计的本质是：定义规则，而不是定义结果尺寸。
+                    </div>
+
+                    <!-- App vs Web Core Difference Demo -->
+                    <div class="demo-container">
+                        <h3>🔴 核心差异演示：视口变大 (375px → 390px)</h3>
+                        <p class="demo-desc">当屏幕变宽 15px 时，App 通常选择等比放大，而 Web 选择填充空间。</p>
+                        
+                        <div class="comparison-row">
+                            <!-- App Logic -->
+                            <div class="logic-group">
+                                <h4>❌ App 逻辑 (Canvas Scaling)</h4>
+                                <div class="device-pair">
+                                    <div class="device d-375">
+                                        <div class="screen app-screen">
+                                            <div class="app-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">375px (基准)</span>
+                                    </div>
+                                    <div class="device d-390">
+                                        <div class="screen app-screen scaled">
+                                            <div class="app-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">390px (放大)</span>
+                                    </div>
+                                </div>
+                                <p class="logic-note">整体等比放大，字号变大，<br>信息量未增加。</p>
+                            </div>
+
+                            <!-- Web Logic -->
+                            <div class="logic-group">
+                                <h4>✅ Web 逻辑 (Fluid Reflow)</h4>
+                                <div class="device-pair">
+                                    <div class="device d-375">
+                                        <div class="screen web-screen">
+                                            <div class="web-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">375px (基准)</span>
+                                    </div>
+                                    <div class="device d-390">
+                                        <div class="screen web-screen reflow">
+                                            <div class="web-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">390px (变宽)</span>
+                                    </div>
+                                </div>
+                                <p class="logic-note highlight">Padding 不变，内容变宽。<br>单行容纳更多内容。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>2️⃣ Mobile First 是 Web 的必然选择</h3>
+                    <p>原因：1. 最小视口约束最严格；2. 先解决信息密度；3. PC 只是“空间变大”。</p>
+                    <p class="quote">如果 375 下逻辑不闭合，PC 一定会乱。</p>
+                </section>
+
+                <section id="implementation" class="section-block">
+                    <h2>四、Web 端实现的详细逻辑（工程级）</h2>
+                    <h3>1️⃣ 设计基准</h3>
+                    <ul>
+                        <li>设计参考视口：375px</li>
+                        <li>单位：CSS px → rem</li>
+                        <li>根字号：<code>html { font-size: 16px; }</code></li>
+                    </ul>
+
+                    <h3>2️⃣ 栅格系统（Grid System）规范</h3>
+                    <p>栅格用于<strong>统一横向布局秩序</strong>，与字号（Typography）和间距（Spacing）并列为三大基础系统。</p>
+                    
+                    <!-- Visual Grid Demo -->
+                    <div class="grid-demo-container">
+                        <h4>📱 移动端 4 列栅格示意 (Mobile 375px)</h4>
+                        <div class="grid-visual">
+                            <div class="grid-margin left"><span>Margin: 16px</span></div>
+                            <div class="grid-columns">
+                                <div class="col"><span>1</span></div>
+                                <div class="gutter"><span>16</span></div>
+                                <div class="col"><span>2</span></div>
+                                <div class="gutter"><span>16</span></div>
+                                <div class="col"><span>3</span></div>
+                                <div class="gutter"><span>16</span></div>
+                                <div class="col"><span>4</span></div>
+                            </div>
+                            <div class="grid-margin right"><span>Margin: 16px</span></div>
+                        </div>
+                        <div class="grid-legend">
+                            <span class="legend-item col">Column (内容区)</span>
+                            <span class="legend-item gutter">Gutter (间距 16px)</span>
+                            <span class="legend-item margin">Margin (安全区 16px)</span>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab-header">
+                            <span class="active">Mobile (375)</span>
+                            <span>Desktop (≥980)</span>
+                            <span>大屏 (≥1600)</span>
+                        </div>
+                        <div class="tab-content">
+                            <!-- Mobile -->
+                            <table class="ant-table">
+                                <tr><td>栅格列数</td><td>4 列</td></tr>
+                                <tr><td>左右安全区</td><td>16px</td></tr>
+                                <tr><td>Gutter</td><td>16px</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <h3>3️⃣ 布局实现原则</h3>
+                    <div class="code-compare">
+                        <div class="code-block error">
+                            <h5>❌ 错误</h5>
+                            <pre>
+写死内容宽度
+写死图片宽高</pre>
+                        </div>
+                        <div class="code-block success">
+                            <h5>✅ 正确</h5>
+                            <pre>
+.section { 
+  padding-left: 16px; 
+  padding-right: 16px; 
+}
+.content { 
+  width: 100%; 
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="dji-strategy" class="section-block">
+                    <h2>五、DJI Neo 2 的 Web 排版策略</h2>
+                    <h3>1️⃣ 字号特征（Mobile）</h3>
+                    <table class="ant-table">
+                        <tr><td>正文</td><td>14–16</td><td>稳定阅读</td></tr>
+                        <tr><td>模块标题</td><td>20–24</td><td>明确层级</td></tr>
+                        <tr><td>Hero</td><td>28–32</td><td>强情绪</td></tr>
+                    </table>
+                    <p>DJI 在 Mobile 端<strong>已经允许非常大的标题</strong>。</p>
+                </section>
+
+                <section id="kandao-strategy" class="section-block">
+                    <h2>六、Kandao Meeting Ultra 的 Web 排版策略</h2>
+                    <h3>1️⃣ 字号特征（Mobile）</h3>
+                    <table class="ant-table">
+                        <tr><td>正文</td><td>14–16</td><td>信息密集</td></tr>
+                        <tr><td>模块标题</td><td>18–20</td><td>克制</td></tr>
+                        <tr><td>Hero</td><td>≤24</td><td>专业导向</td></tr>
+                    </table>
+                </section>
+
+                <section id="final-spec" class="section-block">
+                    <h2>七、最终推荐的统一规范（可执行）</h2>
+                    <p>本章节补充 <strong>不同断点下的字号 / 间距 / rem 换算完整表</strong>，作为设计与前端的直接对照依据。</p>
+
+                    <h3>0️⃣ 断点定义</h3>
+                    <div class="tag-group">
+                        <span class="tag">Mobile < 980px</span>
+                        <span class="tag">SLG ≥ 980px</span>
+                        <span class="tag">XL ≥ 1280px</span>
+                        <span class="tag">3XL ≥ 1600px</span>
+                    </div>
+
+                    <h3>1️⃣ 字号规范（Mobile → PC 非线性）</h3>
+                    <table class="ant-table complex-table">
+                        <thead>
+                            <tr>
+                                <th>层级语义</th>
+                                <th>Mobile px/rem</th>
+                                <th>≥980 px/rem</th>
+                                <th>≥1280 px/rem</th>
+                                <th>≥1600 px/rem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>正文</td>
+                                <td>14–16 / 0.875–1</td>
+                                <td>16 / 1</td>
+                                <td>16–18 / 1–1.125</td>
+                                <td>18 / 1.125</td>
+                            </tr>
+                            <tr>
+                                <td>模块主标题</td>
+                                <td>20 / 1.25</td>
+                                <td>24 / 1.5</td>
+                                <td>30 / 1.875</td>
+                                <td>32–36 / 2–2.25</td>
+                            </tr>
+                            <tr>
+                                <td>Hero 标题</td>
+                                <td>24–28 / 1.5–1.75</td>
+                                <td>32 / 2</td>
+                                <td>40–48 / 2.5–3</td>
+                                <td>48–56 / 3–3.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2️⃣ Spacing 规范</h3>
+                    <table class="ant-table">
+                        <thead>
+                            <tr><th>Token</th><th>px</th><th>rem</th><th>语义</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>sp-2</td><td>8</td><td>0.5</td><td>紧凑间距</td></tr>
+                            <tr><td>sp-4</td><td>16</td><td>1</td><td>模块内</td></tr>
+                            <tr><td>sp-6</td><td>24</td><td>1.5</td><td>模块间</td></tr>
+                            <tr><td>sp-8</td><td>32</td><td>2</td><td>Section</td></tr>
+                            <tr><td>sp-12</td><td>48</td><td>3</td><td>大区隔 / Hero</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="summary" class="section-block">
+                    <h2>八、终极总结</h2>
+                    <div class="hero-quote">
+                        Web 排版的本质不是“适配尺寸”，而是“在不同空间下保持阅读体验稳定”；<br>
+                        Mobile 是规则源头，PC 是非线性放松后的表现形态。
+                    </div>
+                </section>
+                
+                <footer>
+                    <p>© 2026 Web Design Spec. Generated for internal use.</p>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

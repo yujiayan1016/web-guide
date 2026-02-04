@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web 排版与设计基准完整规范</title>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                Web Design Spec
+            </div>
+            <ul class="menu" id="menu">
+                <!-- Javascript will populate this based on content -->
+                <li class="menu-item active"><a href="#core">一、核心结论</a></li>
+                <li class="menu-item"><a href="#perception">二、人眼感知逻辑</a></li>
+                <li class="menu-item"><a href="#tech-model">三、Web 技术模型</a></li>
+                <li class="menu-item"><a href="#implementation">四、实现详细逻辑</a></li>
+                <li class="menu-item"><a href="#dji-strategy">五、DJI 排版策略</a></li>
+                <li class="menu-item"><a href="#kandao-strategy">六、Kandao 排版策略</a></li>
+                <li class="menu-item"><a href="#comparison">七、实战案例演示</a></li>
+                <li class="menu-item"><a href="#color-spec">八、字体颜色规范</a></li>
+                <li class="menu-item"><a href="#final-spec">九、最终规范 (可执行)</a></li>
+                <li class="menu-item"><a href="#summary">十、终极总结</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <header class="page-header">
+                <h1>Web 排版与设计基准完整规范</h1>
+                <p class="subtitle">Mobile First、PC 非线性放松、DJI vs Kandao 实战对比</p>
+                <div class="meta-info">
+                    <span>版本: 1.0</span>
+                    <span>适用: 设计师 / 前端 / 产品</span>
+                </div>
+            </header>
+
+            <div class="markdown-body">
+                
+                <section id="core" class="section-block">
+                    <h2>一、核心结论</h2>
+                    <div class="highlight-box blue">
+                        <strong>Web 的唯一设计基准是 Mobile（375px CSS 视口）。</strong>
+                        <p>PC 端不是新的设计体系，而是：在 Mobile 规则成立的前提下，通过断点进行“响应式增强”。</p>
+                    </div>
+                    <h3>PC 端不是 Mobile ×2</h3>
+                    <div class="comparison-grid">
+                        <div class="card error">
+                            <h4>❌ 错误理解</h4>
+                            <p>PC 屏幕更大 → 字号 ×2</p>
+                        </div>
+                        <div class="card success">
+                            <h4>✅ 正确理解</h4>
+                            <p>PC 是“非线性放松比例”，而不是线性放大。</p>
+                            <ul>
+                                <li>正文：几乎不变</li>
+                                <li>标题：明显变大</li>
+                                <li>Hero：才可能接近 ×2</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="perception" class="section-block">
+                    <h2>二、为什么 PC 不能等比放大（感知层逻辑）</h2>
+                    <h3>1️⃣ 人眼感知的是“视角”，不是 px</h3>
+                    <table class="ant-table">
+                        <thead>
+                            <tr>
+                                <th>设备</th>
+                                <th>常见观看距离</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>手机</td>
+                                <td>25–35 cm</td>
+                            </tr>
+                            <tr>
+                                <td>笔记本</td>
+                                <td>45–60 cm</td>
+                            </tr>
+                            <tr>
+                                <td>显示器</td>
+                                <td>60–80 cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="note">屏幕越大，人离得越远，会自然抵消一部分“放大需求”。</p>
+
+                    <h3>2️⃣ 如果 PC 全部 ×2，会发生什么？</h3>
+                    <table class="ant-table">
+                        <thead>
+                            <tr>
+                                <th>层级</th>
+                                <th>Mobile</th>
+                                <th>×2 后（错误）</th>
+                                <th>合理 PC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>正文</td>
+                                <td>16</td>
+                                <td class="text-error">32 ❌</td>
+                                <td>16–18</td>
+                            </tr>
+                            <tr>
+                                <td>模块标题</td>
+                                <td>20</td>
+                                <td class="text-error">40 ❌</td>
+                                <td>24–30</td>
+                            </tr>
+                            <tr>
+                                <td>页面标题</td>
+                                <td>24</td>
+                                <td class="text-warning">48 ⚠️</td>
+                                <td>30–36</td>
+                            </tr>
+                            <tr>
+                                <td>Hero</td>
+                                <td>28</td>
+                                <td class="text-warning">56 ⚠️</td>
+                                <td>36–48</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="tech-model" class="section-block">
+                    <h2>三、Web 的真实技术模型</h2>
+                    <h3>1️⃣ Web 不是“画布缩放”，而是“规则重算”</h3>
+                    <div class="highlight-box">
+                        Web 设计的本质是：定义规则，而不是定义结果尺寸。
+                    </div>
+
+                    <!-- App vs Web Core Difference Demo -->
+                    <div class="demo-container">
+                        <h3>🔴 核心差异演示：视口变大 (375px → 390px)</h3>
+                        <p class="demo-desc">当屏幕变宽 15px 时，App 通常选择等比放大，而 Web 选择填充空间。</p>
+                        
+                        <div class="comparison-row">
+                            <!-- App Logic -->
+                            <div class="logic-group">
+                                <h4>❌ App 逻辑 (Canvas Scaling)</h4>
+                                <div class="device-pair">
+                                    <div class="device d-375">
+                                        <div class="screen app-screen">
+                                            <div class="app-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">375px (基准)</span>
+                                    </div>
+                                    <div class="device d-390">
+                                        <div class="screen app-screen">
+                                            <div class="app-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">390px (放大)</span>
+                                    </div>
+                                </div>
+                                <p class="logic-note">整体等比放大，字号变大，<br>信息量未增加。</p>
+                            </div>
+
+                            <!-- Web Logic -->
+                            <div class="logic-group">
+                                <h4>✅ Web 逻辑 (Fluid Reflow)</h4>
+                                <div class="device-pair">
+                                    <div class="device d-375">
+                                        <div class="screen web-screen">
+                                            <div class="web-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">375px (基准)</span>
+                                    </div>
+                                    <div class="device d-390">
+                                        <div class="screen web-screen reflow">
+                                            <div class="web-content">
+                                                <div class="sk-hero"></div>
+                                                <div class="sk-lines">
+                                                    <span></span><span></span><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="label">390px (变宽)</span>
+                                    </div>
+                                </div>
+                                <p class="logic-note highlight">Padding 不变，内容变宽。<br>单行容纳更多内容。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>2️⃣ Mobile First 是 Web 的必然选择</h3>
+                    <p>原因：1. 最小视口约束最严格；2. 先解决信息密度；3. PC 只是“空间变大”。</p>
+                    <p class="quote">如果 375 下逻辑不闭合，PC 一定会乱。</p>
+                </section>
+
+                <section id="implementation" class="section-block">
+                    <h2>四、Web 端实现的详细逻辑（工程级）</h2>
+                    <h3>1️⃣ 设计基准</h3>
+                    <ul>
+                        <li>设计参考视口：375px</li>
+                        <li>单位：CSS px → rem</li>
+                        <li>根字号：<code>html { font-size: 16px; }</code></li>
+                    </ul>
+
+                    <h3>2️⃣ 栅格系统（Grid System）规范</h3>
+                    <p>栅格用于<strong>统一横向布局秩序</strong>，与字号（Typography）和间距（Spacing）并列为三大基础系统。</p>
+                    
+                    <!-- Visual Grid Demo -->
+                    <div class="grid-demo-container">
+                        <h4>📱 移动端 4 列栅格示意 (Mobile 375px)</h4>
+                        <div class="grid-visual">
+                            <div class="grid-margin left"><span>Margin: 16px</span></div>
+                            <div class="grid-columns">
+                                <div class="col"><span>1</span></div>
+                                <div class="gutter"><span>16</span></div>
+                                <div class="col"><span>2</span></div>
+                                <div class="gutter"><span>16</span></div>
+                                <div class="col"><span>3</span></div>
+                                <div class="gutter"><span>16</span></div>
+                                <div class="col"><span>4</span></div>
+                            </div>
+                            <div class="grid-margin right"><span>Margin: 16px</span></div>
+                        </div>
+                        <div class="grid-legend">
+                            <span class="legend-item col">Column (内容区)</span>
+                            <span class="legend-item gutter">Gutter (间距 16px)</span>
+                            <span class="legend-item margin">Margin (安全区 16px)</span>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <div class="tab-header">
+                            <span class="active">Mobile (375)</span>
+                            <span>Desktop (≥980)</span>
+                            <span>大屏 (≥1600)</span>
+                        </div>
+                        <div class="tab-content">
+                            <!-- Mobile -->
+                            <table class="ant-table">
+                                <tr><td>栅格列数</td><td>4 列</td></tr>
+                                <tr><td>左右安全区</td><td>16px</td></tr>
+                                <tr><td>Gutter</td><td>16px</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <h3>3️⃣ 布局实现原则</h3>
+                    <div class="code-compare">
+                        <div class="code-block error">
+                            <h5>❌ 错误</h5>
+                            <pre>
+写死内容宽度
+写死图片宽高</pre>
+                        </div>
+                        <div class="code-block success">
+                            <h5>✅ 正确</h5>
+                            <pre>
+.section { 
+  padding-left: 16px; 
+  padding-right: 16px; 
+}
+.content { 
+  width: 100%; 
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="dji-strategy" class="section-block">
+                    <h2>五、DJI Neo 2 的 Web 排版策略</h2>
+                    <h3>1️⃣ 字号特征（Mobile）</h3>
+                    <table class="ant-table">
+                        <tr><td>正文</td><td>14–16</td><td>稳定阅读</td></tr>
+                        <tr><td>模块标题</td><td>20–24</td><td>明确层级</td></tr>
+                        <tr><td>Hero</td><td>28–32</td><td>强情绪</td></tr>
+                    </table>
+                    <p>DJI 在 Mobile 端<strong>已经允许非常大的标题</strong>。</p>
+                </section>
+
+                <section id="kandao-strategy" class="section-block">
+                    <h2>六、Kandao Meeting Ultra 的 Web 排版策略</h2>
+                    <h3>1️⃣ 字号特征（Mobile）</h3>
+                    <table class="ant-table">
+                        <tr><td>正文</td><td>14–16</td><td>信息密集</td></tr>
+                        <tr><td>模块标题</td><td>18–20</td><td>克制</td></tr>
+                        <tr><td>Hero</td><td>≤24</td><td>专业导向</td></tr>
+                    </table>
+                </section>
+
+                <section id="comparison" class="section-block">
+                    <h2>七、实战案例演示 (DJI & Kandao)</h2>
+                    <p>以下展示了 <strong>DJI (强视觉)</strong> 与 <strong>Kandao (强信息)</strong> 在真实视口变化下的响应策略。</p>
+
+                    <!-- 375px vs 390px Viewport Simulation -->
+                    <div class="viewport-comparison-section">
+                        <h3>🔬 微观视口实战：375px vs 390px 变化示意</h3>
+                        <p class="section-desc">
+                            <strong>核心结论：</strong> 视口增加 15px (375→390)，<strong>字号不应变化</strong>，变化的是<strong>安全区 (Padding)</strong> 和 <strong>间距 (Gap/Margin)</strong>。<br>
+                            这是“非线性放松”在移动端的直接体现：用多出来的空间来“透气”，而不是填满。
+                        </p>
+
+                        <div class="vp-demo-group">
+                            <h4>场景 A：DJI 风格 (Hero 视觉导向) - 智能跟随模块</h4>
+                            <div class="vp-container">
+                                <!-- 375px Viewport -->
+                                <div class="vp-frame vp-375">
+                                    <div class="vp-header">iPhone SE / Mini (375px)</div>
+                                    <div class="vp-screen real-screenshot">
+                                        <img src="images/dji-neo-center-375.png" alt="DJI Neo on 375px viewport" />
+                                    </div>
+                                    <p class="vp-note">文字与边缘距离较近，视觉聚焦于中心</p>
+                                </div>
+
+                                <!-- 390px Viewport -->
+                                <div class="vp-frame vp-390">
+                                    <div class="vp-header">iPhone 13/14 Pro (390px)</div>
+                                    <div class="vp-screen real-screenshot">
+                                        <img src="images/dji-neo-center-390.png" alt="DJI Neo on 390px viewport" />
+                                    </div>
+                                    <p class="vp-note highlight">✅ 观察：字号未变，但左右留白明显增加，阅读呼吸感更强</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vp-demo-group">
+                            <h4>场景 B：Kandao 风格 (信息密度导向)</h4>
+                            <div class="vp-container">
+                                <!-- 375px Viewport -->
+                                <div class="vp-frame vp-375">
+                                    <div class="vp-header">iPhone SE / Mini (375px)</div>
+                                    <div class="vp-screen real-screenshot">
+                                        <img src="images/kandao-375.png" alt="Kandao Meeting Ultra on 375px viewport" />
+                                    </div>
+                                    <p class="vp-note">信息紧凑，利用每一像素</p>
+                                </div>
+
+                                <!-- 390px Viewport -->
+                                <div class="vp-frame vp-390">
+                                    <div class="vp-header">iPhone 13/14 Pro (390px)</div>
+                                    <div class="vp-screen real-screenshot">
+                                        <img src="images/kandao-390.png" alt="Kandao Meeting Ultra on 390px viewport" />
+                                    </div>
+                                    <p class="vp-note highlight">✅ 观察：布局结构一致，通过增加间距适配更宽屏幕</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="color-spec" class="section-block">
+                    <h2>八、字体颜色规范</h2>
+                    <p>建立统一的文本颜色系统，确保信息层级清晰。</p>
+                    
+                    <div class="color-palette">
+                        <div class="color-item">
+                            <div class="swatch" style="background: #000000; color: #fff;">#000000</div>
+                            <div class="info">
+                                <strong>Primary Text</strong>
+                                <span>重要标题 / 强强调</span>
+                                <code>color: #000000</code>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="swatch" style="background: #333333; color: #fff;">#333333</div>
+                            <div class="info">
+                                <strong>Body Text</strong>
+                                <span>正文 / 普通段落</span>
+                                <code>color: #333333</code>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="swatch" style="background: #666666; color: #fff;">#666666</div>
+                            <div class="info">
+                                <strong>Secondary Text</strong>
+                                <span>辅助信息 / 说明文字</span>
+                                <code>color: #666666</code>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="swatch" style="background: #999999; color: #fff;">#999999</div>
+                            <div class="info">
+                                <strong>Disabled / Placeholder</strong>
+                                <span>失效状态 / 占位符</span>
+                                <code>color: #999999</code>
+                            </div>
+                        </div>
+                        <div class="color-item">
+                            <div class="swatch" style="background: #1677ff; color: #fff;">#1677ff</div>
+                            <div class="info">
+                                <strong>Link / Brand</strong>
+                                <span>链接 / 交互色</span>
+                                <code>color: #1677ff</code>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="final-spec" class="section-block">
+                    <h2>九、最终推荐的统一规范（可执行）</h2>
+                    <p>本章节补充 <strong>不同断点下的字号 / 间距 / rem 换算完整表</strong>，作为设计与前端的直接对照依据。</p>
+
+                    <h3>0️⃣ 断点定义</h3>
+                    <div class="tag-group">
+                        <span class="tag">Mobile < 980px</span>
+                        <span class="tag">SLG ≥ 980px</span>
+                        <span class="tag">XL ≥ 1280px</span>
+                        <span class="tag">3XL ≥ 1600px</span>
+                    </div>
+
+                    <h3>1️⃣ 字号规范（Mobile → PC 非线性）</h3>
+                    <table class="ant-table complex-table">
+                        <thead>
+                            <tr>
+                                <th>层级语义</th>
+                                <th>Mobile px/rem</th>
+                                <th>≥980 px/rem</th>
+                                <th>≥1280 px/rem</th>
+                                <th>≥1600 px/rem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>正文</td>
+                                <td>14–16 / 0.875–1</td>
+                                <td>16 / 1</td>
+                                <td>16–18 / 1–1.125</td>
+                                <td>18 / 1.125</td>
+                            </tr>
+                            <tr>
+                                <td>模块主标题</td>
+                                <td>20 / 1.25</td>
+                                <td>24 / 1.5</td>
+                                <td>30 / 1.875</td>
+                                <td>32–36 / 2–2.25</td>
+                            </tr>
+                            <tr>
+                                <td>Hero 标题</td>
+                                <td>24–28 / 1.5–1.75</td>
+                                <td>32 / 2</td>
+                                <td>40–48 / 2.5–3</td>
+                                <td>48–56 / 3–3.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2️⃣ Spacing 规范</h3>
+                    <table class="ant-table">
+                        <thead>
+                            <tr><th>Token</th><th>px</th><th>rem</th><th>语义</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>sp-2</td><td>8</td><td>0.5</td><td>紧凑间距</td></tr>
+                            <tr><td>sp-4</td><td>16</td><td>1</td><td>模块内</td></tr>
+                            <tr><td>sp-6</td><td>24</td><td>1.5</td><td>模块间</td></tr>
+                            <tr><td>sp-8</td><td>32</td><td>2</td><td>Section</td></tr>
+                            <tr><td>sp-12</td><td>48</td><td>3</td><td>大区隔 / Hero</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="summary" class="section-block">
+                    <h2>十、一句话终极总结</h2>
+                    <div class="hero-quote">
+                        Web 排版的本质不是“适配尺寸”，而是“在不同空间下保持阅读体验稳定”；<br>
+                        Mobile 是规则源头，PC 是非线性放松后的表现形态。
+                    </div>
+                </section>
+                
+                <footer>
+                    <p>© 2026 Web Design Spec. Generated for internal use.</p>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html><style>
+:root {
+    --primary-color: #1677ff;
+    --text-color: #000000e0;
+    --text-secondary: #00000073;
+    --bg-color: #ffffff;
+    --sidebar-bg: #f7f8fa;
+    --border-color: #f0f0f0;
+    --code-bg: #f5f5f5;
+    --error-color: #ff4d4f;
+    --success-color: #52c41a;
+    --warning-color: #faad14;
+    
+    --sidebar-width: 260px;
+    --content-max-width: 960px;
+    
+    --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-base);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    padding: 24px 0;
+    z-index: 100;
+}
+
+.sidebar .logo {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 0 24px 24px;
+    border-bottom: 1px solid var(--border-color);
+    color: #000;
+}
+
+.menu {
+    list-style: none;
+    padding: 16px 0;
+}
+
+.menu-item a {
+    display: block;
+    padding: 10px 24px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s;
+    border-right: 3px solid transparent;
+}
+
+.menu-item a:hover {
+    color: var(--primary-color);
+}
+
+.menu-item.active a {
+    color: var(--primary-color);
+    background: #e6f7ff;
+    border-right-color: var(--primary-color);
+}
+
+/* Content Area */
+.content-area {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 40px 60px;
+    max-width: calc(100% - var(--sidebar-width));
+}
+
+.page-header {
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 38px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #000;
+}
+
+.page-header .subtitle {
+    font-size: 20px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.meta-info {
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.meta-info span {
+    margin-right: 20px;
+    background: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Markdown Body Styles */
+.markdown-body {
+    max-width: var(--content-max-width);
+}
+
+.section-block {
+    margin-bottom: 80px;
+    scroll-margin-top: 40px; /* For anchor offset */
+}
+
+h2 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary-color);
+    line-height: 1.4;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 32px 0 16px;
+    color: #000;
+}
+
+p {
+    margin-bottom: 16px;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+/* Highlight Box */
+.highlight-box {
+    background: #f9f9f9;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 24px 0;
+}
+
+.highlight-box.blue {
+    background: #e6f7ff;
+    border-color: #91caff;
+}
+
+.highlight-box strong {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+/* Cards Grid */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.card {
+    border-radius: 8px;
+    padding: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.card.error {
+    background: #fff1f0;
+    border-color: #ffccc7;
+}
+
+.card.success {
+    background: #f6ffed;
+    border-color: #b7eb8f;
+}
+
+.card h4 {
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+/* Tables */
+.ant-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+}
+
+.ant-table th, .ant-table td {
+    border: 1px solid var(--border-color);
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.ant-table th {
+    background: #fafafa;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.text-error { color: var(--error-color); }
+.text-warning { color: var(--warning-color); }
+
+/* Code Blocks */
+.code-compare {
+    display: flex;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+.code-block {
+    flex: 1;
+    background: var(--code-bg);
+    padding: 16px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.code-block h5 {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Tags */
+.tag-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+}
+
+.tag {
+    background: #f5f5f5;
+    border: 1px solid #d9d9d9;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+/* Hero Quote */
+.hero-quote {
+    font-size: 20px;
+    font-weight: 300;
+    text-align: center;
+    padding: 60px 20px;
+    background: #fafafa;
+    border-radius: 12px;
+    margin: 40px 0;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+/* Footer */
+footer {
+    margin-top: 100px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px;
+    }
+    .content-area {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 20px;
+    }
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+    .code-compare {
+        flex-direction: column;
+    }
+    .page-header h1 {
+        font-size: 28px;
+    }
+}
+
+/* App vs Web Comparison Demo (375 vs 390) */
+.demo-container {
+    background: #f0f2f5;
+    padding: 32px;
+    border-radius: 12px;
+    margin: 24px 0;
+}
+
+.demo-desc {
+    margin-bottom: 24px;
+    color: var(--text-secondary);
+}
+
+.comparison-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.logic-group {
+    flex: 1;
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logic-group h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.device-pair {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 16px;
+}
+
+.device {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.screen {
+    background: #fff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+}
+
+.d-375 .screen {
+    width: 100px;
+    height: 180px;
+}
+
+.d-390 .screen {
+    width: 110px; /* Visually wider */
+    height: 190px;
+}
+
+.label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* App Logic Visuals */
+.app-screen {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: #fff;
+    overflow: hidden;
+}
+
+.app-screen .app-content {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 
+   App Scaling Simulation:
+   To visualize "scaling up", we make the content element physically larger (via transform)
+   but fit it into the wider screen.
+   
+   In a real device, the screen is physically wider. 
+   If an app scales, it just fills that wider screen with the SAME layout, just zoomed.
+*/
+
+.d-390 .app-screen .app-content {
+    /* 
+       Key fix: Instead of overflowing, we simulate that the layout size matches the screen size,
+       but the elements inside are proportionally larger.
+       
+       We can simulate this by zooming the content container.
+    */
+    width: 100%;
+    height: 100%;
+    transform: scale(1.08); /* Slight zoom to match the width increase (390/375 approx 1.04, exaggerated for visibility) */
+    transform-origin: top center;
+}
+
+/* Web Logic Visuals */
+.web-screen .web-content {
+    padding: 8px; /* Fixed padding for both sizes */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.web-screen.reflow .web-content {
+    /* No padding change! Content just naturally fills the wider container */
+    padding: 8px; 
+}
+
+/* Skeleton UI Elements */
+.sk-hero {
+    width: 100%; /* Hero fills the container width */
+    height: 40px;
+    background: #ffd666;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.sk-lines span {
+    display: block;
+    height: 6px;
+    background: #e6e6e6;
+    margin-bottom: 4px;
+    border-radius: 2px;
+}
+
+.web-screen .sk-lines span {
+    /* Web: lines stay same height (font-size), but width is % of container */
+    /* So in 390px, these bars will naturally be wider visually */
+}
+
+/* Special visual cue for Reflow: Show that more fits or it stretches */
+.web-screen.reflow .sk-lines span:last-child {
+    width: 40%; /* Represents text reflowing, taking up less vertical space or ending earlier */
+    background: #95de64; /* Highlight the reflow difference */
+}
+
+.sk-lines span:last-child {
+    width: 60%;
+}
+
+.logic-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.logic-note.highlight {
+    color: #52c41a;
+    font-weight: 500;
+}
+
+
+/* Grid Visual Demo */
+.grid-demo-container {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 24px 0;
+}
+
+.grid-demo-container h4 {
+    margin-top: 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.grid-visual {
+    display: flex;
+    height: 120px;
+    background: #f0f2f5; /* Device Background */
+    position: relative;
+    border: 2px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 375px; /* Actual mobile width simulation */
+    margin: 0 auto 20px;
+}
+
+.grid-margin {
+    width: 32px; /* Visual representation of 16px margin (scaled for demo visibility or kept proportional) */
+    background: rgba(255, 77, 79, 0.2); /* Red for dangerous margin */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-right: 1px dashed #ff4d4f;
+}
+
+.grid-margin.right {
+    border-right: none;
+    border-left: 1px dashed #ff4d4f;
+}
+
+.grid-margin span {
+    writing-mode: vertical-rl;
+    font-size: 10px;
+    color: #cf1322;
+    transform: rotate(180deg);
+}
+
+.grid-columns {
+    flex: 1;
+    display: flex;
+    background: #fff;
+}
+
+.col {
+    flex: 1;
+    background: rgba(24, 144, 255, 0.2); /* Blue for columns */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #096dd9;
+    font-weight: bold;
+}
+
+.gutter {
+    width: 16px; /* Gutter width */
+    background: rgba(82, 196, 26, 0.2); /* Green for gutters */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #389e0d;
+}
+
+.grid-legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-item::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.legend-item.col::before { background: rgba(24, 144, 255, 0.2); }
+.legend-item.gutter::before { background: rgba(82, 196, 26, 0.2); }
+.legend-item.margin::before { background: rgba(255, 77, 79, 0.2); }
+
+
+/* Color Palette */
+.color-palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+}
+
+.color-item {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.swatch {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+    font-weight: 500;
+}
+
+.info {
+    padding: 12px;
+}
+
+.info strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.info span {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.info code {
+    font-size: 12px;
+    background: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #666;
+}
+
+/* Viewport Comparison Demo (Real Screenshots) */
+.viewport-comparison-section {
+    background: #fff;
+    padding: 0;
+    margin-top: 40px;
+}
+
+.section-desc {
+    background: #f0f5ff;
+    border-left: 4px solid #1890ff;
+    padding: 16px;
+    margin-bottom: 32px;
+    border-radius: 4px;
+}
+
+.vp-demo-group {
+    margin-bottom: 40px;
+}
+
+.vp-demo-group h4 {
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.vp-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding-bottom: 16px;
+}
+
+.vp-frame {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vp-header {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    background: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.vp-screen {
+    background: #fff;
+    border: 2px solid #333; /* Phone bezel */
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 375px Simulation */
+.vp-375 .vp-screen {
+    width: 280px; /* Scaled down representation of 375px */
+    height: 400px;
+}
+
+/* 390px Simulation (Slightly wider) */
+.vp-390 .vp-screen {
+    width: 292px; /* Scaled down representation of 390px (approx +4%) */
+    height: 400px;
+}
+
+.vp-screen.real-screenshot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+
+.vp-note {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 280px;
+}
+
+.vp-note.highlight {
+    color: #52c41a;
+    font-weight: 500;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Active link highlighting on scroll
+    const sections = document.querySelectorAll('.section-block');
+    const navLi = document.querySelectorAll('.menu-item');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            // Adjust offset for better triggering
+            if (pageYOffset >= (sectionTop - 150)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLi.forEach(li => {
+            li.classList.remove('active');
+            if (li.querySelector('a').getAttribute('href').includes(current)) {
+                li.classList.add('active');
+            }
+        });
+    });
+});
+</script>
